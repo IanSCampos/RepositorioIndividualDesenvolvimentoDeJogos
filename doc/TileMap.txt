@@ -1,0 +1,65 @@
+Analise do código.hpp: Após a leitura da header file foram notados a funções que precisariam ser implementadas no .cpp, após as funções serem identificadas as entradas e saídas de cada função foram identificadas e um prompt foi escrito, este prompt foi inserido no um arquivo .txt para consulta.
+
+Depuração e Debugging: O include random em Dungeon2D não existia.
+
+Prompt:
+<Role>
+    For this task you are a C++ developer with a expecialization in game development.
+</Role>
+
+<Context>
+1. The tile matrix: storage, CSV persistence and coordinate translation.
+2.The map is one integer per cell (EMPTY_TILE / WALL_TILE), stored ROW-MAJOR (index = row * width + col), following the representation conventions of Global.hpp. It also converts between continuous world coordinates and discrete cell indices.
+3.The matrix is produced by RASTERIZING a Dungeon2D: loadFromDungeon walks the dungeon's BSP tree and corridor list and writes the corresponding cells.
+4.The Dungeon2D class is already implemented and its header file is available.
+5.Private values in the .hpp: 
+    private:
+        int              m_width{0};
+        int              m_height{0};
+        std::vector<int> m_cells;   ///< Row-major, size m_width * m_height.
+6.This is a task made for a game design course, we ain to make the code for basic macanics and in the end make a simple 2D game.
+</Context>
+
+<Restriction>
+1.coments with no more than 2 lines.
+3.Ask before any include.
+</Restriction>
+
+<Instructions>
+1.Implement the function void loadFromDungeon(const Dungeon2D& dungeon); for the TileMap class.
+    It has no return value(void function).
+    This functions receives a Dungeon2D as parameter.
+    It will size the matrix to the dungeon proportions, carve EMPTY_TILE for the rooms in BSP tree leavesand for every corridor in the dungeon list.
+    Fill the rest with WALL_TILE.
+2.IMplement the function [[nodiscard]] bool saveCSV(const std::string& path) const;
+    It must return true on sucess and false on failure.
+    The parameter is a const std::string&, the path to the CSV file.
+    This function saves the matrix as a CSV file, one row per line, integers separated by single commas, NO trailing comma, row-major (row 0 first).
+3. Implement the function [[nodiscard]] bool loadCSV(const std::string& path);
+    The parameter is a const std::string&, the path to the CSV file.
+    This function loads a matrix from a CSV file, the CSV file must be in the same format as saveCSV.
+    On failure the map is left unchanged.
+4. Implement the function [[nodiscard]] int width() const noexcept;
+    It returns the width of the matrix.
+5. Implement the function [[nodiscard]] int height() const noexcept;
+    It returns the height of the matrix.
+6. Implement the function [[nodiscard]] int at(int col, int row) const;
+    It returns the value of the cell at (col, row).
+    pre condition: the indices are in-range.
+7. Implement the function [[nodiscard]] bool isWall(int col, int row) const;
+    It returns true if the cell at (col, row) is a wall, false otherwise.
+    pre condition: the indices are in-range.
+8. Implement the function [[nodiscard]] const int* data() const noexcept;
+    It returns a pointer to the raw matrix.
+9. Implement the function void toIndices(const Vector2D& world, int& col, int& row) const noexcept;
+    It converts a world position to cell indices.
+    col=floor(x/TILE_SIZE), row=floor(y/TILE_SIZE).
+10. Implement the function [[nodiscard]] Vector2D toWorld(int col, int row) const noexcept;
+    It converts cell indices to world coordinates.
+11. Implement the function void randomEmptyCell(int& col, int& row) const;
+    It returns the indices of a randomly chosen EMPTY_TILE cell.
+    Parameters are the column and row of the chosen cell.
+    Parameters are output.
+    pre condition: at least one empty cell exists.
+2. All the above must be contained in a simgle cpp file named TileMap.cpp.   
+</Instructions>
